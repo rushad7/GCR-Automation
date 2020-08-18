@@ -27,13 +27,13 @@ def login(email, password):
         
         email_id = driver.find_element_by_name('identifier')
         email_id.send_keys(email)
-        submit_email_id = driver.find_element_by_class_name('VfPpkd-RLmnJb')
+        submit_email_id = driver.find_element_by_id('identifierNext')
         submit_email_id.click()
         
         password_field = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'password')))
         pswd = password_field.find_element_by_tag_name('input')
         pswd.send_keys(password)
-        submit_password = driver.find_element_by_class_name('VfPpkd-RLmnJb')
+        submit_password = driver.find_element_by_id('passwordNext')
         submit_password.click()
     
         print("Login successfull \n")
