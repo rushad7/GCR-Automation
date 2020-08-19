@@ -5,6 +5,8 @@ Created on Tue Aug 18 11:16:31 2020
 @author: Rushad
 """
 
+import json
+import datetime
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -43,3 +45,19 @@ def login(email, password):
         print("Login Failed")
     
 login(email, password)
+
+def getDO():
+
+    with open("acad_planner.json") as planner:
+        planner_data = json.load(planner)
+    
+    date_time = datetime.datetime.now()
+    month = date_time.month
+    day = date_time.day
+    day_order = planner_data[month-8][str(month)][str(day)]
+    
+    return day_order
+
+getDO()
+    
+    
