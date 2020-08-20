@@ -44,7 +44,6 @@ def login(email, password):
     except ElementNotInteractableException or StaleElementReferenceException or NoSuchElementException:
         print("Login Failed")
     
-login(email, password)
 
 def getDO():
 
@@ -58,6 +57,20 @@ def getDO():
     
     return day_order
 
+def openLecture(slot):
+    
+    slot_dict = {"A":0, "B":1, "C":2, "D":3, "E":4, "F":5, "G":6, "L1":7, "L2":8, "L3":9, "L4":10}
+    
+    with open("xpaths.json") as xpaths:
+        xpath = json.load(xpaths)
+    
+    current_xpath = xpath[slot_dict[slot]][slot]["1"]
+    subject = WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH, current_xpath)))
+    subject.click()
+    current_xpath = xpath[slot_dict[slot]][slot]["2"]
+    link = WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH, current_xpath)))
+    link.click()
+
 getDO()
-    
-    
+login(email, password)
+openLecture("G")
