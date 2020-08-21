@@ -8,15 +8,20 @@ Created on Tue Aug 18 11:16:31 2020
 import json
 import datetime
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
 from selenium.common.exceptions import ElementNotInteractableException, StaleElementReferenceException, NoSuchElementException
 
 gcr_url = "https://accounts.google.com/signin/v2/identifier?service=classroom&passive=1209600&continue=https%3A%2F%2Fclassroom.google.com%2Fu%2F0%2Fh&followup=https%3A%2F%2Fclassroom.google.com%2Fu%2F0%2Fh&flowName=GlifWebSignIn&flowEntry=ServiceLogin"
 
+chrome_options = Options()
+chrome_options.add_argument("--use-fake-ui-for-media-stream")
+chrome_options.add_argument("--disable-notifications")
+
 DRIVER_PATH = r"C:/chromedriver.exe"
-driver = webdriver.Chrome(executable_path=DRIVER_PATH)
+driver = webdriver.Chrome(executable_path=DRIVER_PATH, options=chrome_options)
 
 email = "rb3049@srmist.edu.in"
 password = "SRMIST@#8930412"
@@ -67,10 +72,19 @@ def openLecture(slot):
     current_xpath = xpath[slot_dict[slot]][slot]["1"]
     subject = WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH, current_xpath)))
     subject.click()
+    
     current_xpath = xpath[slot_dict[slot]][slot]["2"]
     link = WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH, current_xpath)))
     link.click()
+    
+    driver.switch_to.window(driver.window_handles[1])
+    
+    join = WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='yDmH0d']/c-wiz/div/div/div[4]/div[3]/div/div[2]/div/div/div[2]/div/div[2]/div/div[1]/div[1]/span/span")))
+    join.click()
+
 
 getDO()
 login(email, password)
+#gcr_home = driver.current_window_handle
+#driver.switch_to.window(gcr_home)
 openLecture("G")
