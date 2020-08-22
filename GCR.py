@@ -79,7 +79,8 @@ def openLecture(slot):
     
     driver.switch_to.window(driver.window_handles[1])
     
-    join = WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='yDmH0d']/c-wiz/div/div/div[4]/div[3]/div/div[2]/div/div/div[2]/div/div[2]/div/div[1]/div[1]/span/span")))
+    current_xpath = xpath[slot_dict[slot]][slot]["3"]
+    join = WebDriverWait(driver,40).until(EC.element_to_be_clickable((By.XPATH, current_xpath)))
     join.click()
 
 
@@ -87,4 +88,4 @@ getDO()
 login(email, password)
 #gcr_home = driver.current_window_handle
 #driver.switch_to.window(gcr_home)
-openLecture("G")
+openLecture("L4")
