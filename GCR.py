@@ -183,6 +183,7 @@ while True:
     FMT = '%H:%M:%S'
     tdelta = datetime.strptime(slot_time[day_order][slot], FMT) - datetime.strptime(current_time, FMT)
     
-    time.sleep(tdelta.seconds)   
+    time.sleep(tdelta.seconds)
+    driver.close()
 
 print("No Lectures")
