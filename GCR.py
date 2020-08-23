@@ -5,6 +5,7 @@ Created on Tue Aug 18 11:16:31 2020
 @author: Rushad
 """
 
+import time
 import json
 import datetime
 from selenium import webdriver
@@ -60,7 +61,79 @@ def getDO():
     day = date_time.day
     day_order = planner_data[month-8][str(month)][str(day)]
     
+    if day_order !=  "None":
+        day_order = int(planner_data[month-8][str(month)][str(day)])
+    else:
+        day_order = planner_data[month-8][str(month)][str(day)]
+    
     return day_order
+
+def getSlot(day_order):
+    
+    date_time = datetime.datetime.now()
+    hour = date_time.hour
+    
+    if day_order == 1:
+        if hour == 9 or hour == 10:
+            slot = "A"
+        elif hour == 11:
+            slot = "G"
+        elif hour == 13:
+            slot = "F"
+        elif hour == 14 or 15:
+            slot = "L3"
+            
+    elif day_order == 2:
+        if hour == 9 or hour == 10:
+            slot = "B"
+        elif hour == 11:
+            slot = "A"
+        elif hour == 13:
+            slot = "G"
+        elif hour == 14 or 15:
+            slot = None
+            
+    elif day_order == 3:
+        if hour == 9 or hour == 10:
+            slot = "C"
+        elif hour == 11:
+            slot = "B"
+        elif hour == 13:
+            slot = "D"
+        elif hour == 14 or 15:
+            slot = "L1"
+    
+    elif day_order == 4:
+        if hour == 9 or hour == 10:
+            slot = "D"
+        elif hour == 11:
+            slot = "C"
+        elif hour == 13:
+            slot = "A"
+        elif hour == 14 or 15:
+            slot = "L4"
+            
+    elif day_order == 5:
+        if hour == 9 or hour == 10:
+            slot = "E"
+        elif hour == 11:
+            slot = "D"
+        elif hour == 13:
+            slot = "B"
+        elif hour == 14 or 15:
+            slot = "L2"
+            
+    elif day_order == 6:
+        if hour == 9 or hour == 10:
+            slot = "F"
+        elif hour == 11:
+            slot = "E"
+        elif hour == 13:
+            slot = "C"
+        elif hour == 14 or 15:
+            slot = "G"
+            
+    return slot
 
 def openLecture(slot):
     
@@ -84,8 +157,32 @@ def openLecture(slot):
     join.click()
 
 
-getDO()
-login(email, password)
 #gcr_home = driver.current_window_handle
 #driver.switch_to.window(gcr_home)
-openLecture("L4")
+
+slot_time = {"1":{"A":"10:40:00", "G":"12:00:00", "F":"2:00:00", "L3":"3:30:00"},
+                 "2":{"B":"10:40:00", "A":"12:00:00", "G":"2:00:00", "None":"3:30:00"},
+                 "3":{"C":"10:40:00", "B":"12:00:00", "D":"2:00:00", "L1":"3:30:00"},
+                 "4":{"D":"10:40:00", "C":"12:00:00", "A":"2:00:00", "L4":"3:30:00"},
+                 "5":{"E":"10:40:00", "D":"12:00:00", "B":"2:00:00", "L2":"3:30:00"},
+                 "6":{"F":"10:40:00", "E":"12:00:00", "C":"2:00:00", "G":"3:30:00"}}
+
+while True:
+    
+    day_order = getDO()
+    
+    if day_order != "None":
+        slot = getSlot(day_order)
+    else:
+        break
+    
+    login(email, password)
+    openLecture(slot)
+    
+    current_time = str(datetime.datetime.now())[11:19]
+    FMT = '%H:%M:%S'
+    tdelta = datetime.strptime(slot_time[day_order][slot], FMT) - datetime.strptime(current_time, FMT)
+    
+    time.sleep(tdelta.seconds)   
+
+print("No Lectures")
