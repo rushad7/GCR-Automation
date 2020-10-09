@@ -24,8 +24,8 @@ chrome_options.add_argument("--disable-notifications")
 DRIVER_PATH = r"C:/chromedriver.exe"
 driver = webdriver.Chrome(executable_path=DRIVER_PATH, options=chrome_options)
 
-email = "rb3049@srmist.edu.in"
-password = "SRMIST@#8930412"
+email = 'your email'
+password = 'your password'
 
 def login(email, password):
     
